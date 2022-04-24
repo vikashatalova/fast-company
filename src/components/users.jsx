@@ -31,6 +31,20 @@ const Users = () => {
         setCurrentPage(pageIndex);
     };
 
+    const handleSort = (item) => {
+        setSortBy(item);
+    };
+
+    useEffect(() => {
+        api.professionsApi.fetchAll().then((data) => setProfessions(data));
+    }, [professions]);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
+
+    const clearFilter = () => {
+        setselectedProf();
+    };
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
@@ -38,21 +52,6 @@ const Users = () => {
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
-
-        const handleSort = (item) => {
-            setSortBy(item);
-        };
-
-        useEffect(() => {
-            api.professionsApi.fetchAll().then((data) => setProfessions(data));
-        }, [professions]);
-        useEffect(() => {
-            setCurrentPage(1);
-        }, [selectedProf]);
-
-        const clearFilter = () => {
-            setselectedProf();
-        };
 
         return (
             <div className="d-flex ">
