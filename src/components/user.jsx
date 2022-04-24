@@ -7,7 +7,7 @@ const User = ({ user, onDelete }) => {
     return (
         <tr key={user._id}>
             <td>{user.name}</td>
-            <td>{user.qualities.map((quality) => Qualities(quality))}</td>
+            <td>{user.qualities.map((quality) => <Qualities key={quality._id} {...quality}/>)}</td>
             <td>{user.profession.name}</td>
             <td>{user.completedMeetings}</td>
             <td>{user.rate}</td>
