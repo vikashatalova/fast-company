@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
-    // const up = <i className="bi bi-caret-up-fill"></i>;
-    // const down = <i className="bi bi-caret-down-fill"></i>;
     const handleSort = (item) => {
         if (selectedSort.path === item) {
             onSort({ ...selectedSort, order: selectedSort.order === "asc" ? "desc" : "asc" });

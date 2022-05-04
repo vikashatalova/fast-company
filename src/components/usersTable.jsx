@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import Bookmark from "./bookmark";
 import QualitestList from "./qualitestList";
 import Table from "./table";
+import LinkUser from "./linkUser";
 
 const UserTable = ({ onSort, users, onDelete, selectedSort }) => {
     const columns = {
-        name: { path: "name", name: "Имя" },
+        name: { path: "name", name: "Имя", component: (user) => <LinkUser user={user}/> },
         qualities: { name: "Качество", component: (user) => <QualitestList qualities={user.qualities}/> },
         professions: { path: "profession.name", name: "Профессия" },
         completedMeetings: { path: "completedMeetings", name: "Количество встреч" },

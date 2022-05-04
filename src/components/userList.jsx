@@ -7,13 +7,14 @@ import GroupList from "./groupList";
 import UserTable from "./usersTable";
 import _ from "lodash";
 
-const Users = () => {
+const UserList = () => {
     const [professions, setProfessions] = useState(api.professionsApi.fetchAll());
     const [selectedProf, setselectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
     const pageSize = 8;
 
     const [users, setUsers] = useState();
+    // получение данных ассинхронно
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -91,4 +92,4 @@ const Users = () => {
     return "loading...";
 };
 
-export default Users;
+export default UserList;
