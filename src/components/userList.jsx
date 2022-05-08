@@ -11,6 +11,7 @@ const UserList = () => {
     const [professions, setProfessions] = useState(api.professionsApi.fetchAll());
     const [selectedProf, setselectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [value, setValue] = useState("");
     const pageSize = 8;
 
     const [users, setUsers] = useState();
@@ -46,13 +47,31 @@ const UserList = () => {
     const clearFilter = () => {
         setselectedProf();
     };
+    const clearValue = () => {
+        setValue("");
+    };
+    const filteredValue = () => {
+        if (value) {
+            const filterUser = users.filter((user) => {
+                return user.name.toLowerCase().includes(value.toLowerCase());
+            });
+            return filterUser;
+        } else {
+            return users;
+        }
+    };
+    const search = filteredValue();
     if (users) {
         const filteredUsers = selectedProf
-            ? users.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
-            : users;
+            ? search.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+            : search;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
+        const handleChange = ({ target }) => {
+            const { value } = target;
+            setValue(value);
+        };
 
         return (
             <div className="d-flex ">
@@ -71,6 +90,23 @@ const UserList = () => {
                 }
                 <div className="d-flex flex-column">
                     <h2><SearchStatus length={count}/></h2>
+                    <div className="input-group mb-3">
+                        <input
+                            type="text"
+                            placeholder="Поиск по сайту"
+                            className="form-control"
+                            onChange={handleChange}
+                            value={value}
+                        />
+                        <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            id="button-addon2"
+                            onClick={clearValue}
+                        >
+                            <i className="bi bi-x-circle"></i>
+                        </button>
+                    </div>
                     <UserTable
                         onSort={handleSort}
                         users={userCrop}
