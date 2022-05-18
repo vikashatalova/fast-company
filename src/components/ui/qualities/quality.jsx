@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Qualities = ({ color, name, _id }) => {
     return (
-        <span className={`badge bg-${color} m-1`} key={_id}>
+        <span className={"badge m-1 bg-" + color } key={_id}>
             {name}
         </span>
     );

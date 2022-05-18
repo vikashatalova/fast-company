@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import api from "../api/index";
-import SearchStatus from "./searchStatus";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
-import GroupList from "./groupList";
-import UserTable from "./usersTable";
+import api from "../../../api/index";
+import SearchStatus from "../../ui/searchStatus";
+import Pagination from "../../common/pagination";
+import { paginate } from "../../../utils/paginate";
+import GroupList from "../../common/groupList";
+import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 
 const UserList = () => {
@@ -44,12 +44,8 @@ const UserList = () => {
         setCurrentPage(1);
     }, [selectedProf]);
 
-    const clearFilter = () => {
-        setselectedProf();
-    };
-    const clearValue = () => {
-        setValue("");
-    };
+    const clearFilter = () => setselectedProf();
+    const clearValue = () => setValue("");
     const filteredValue = () => {
         if (value) {
             const filterUser = users.filter((user) => {
@@ -70,6 +66,7 @@ const UserList = () => {
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
         const handleChange = ({ target }) => {
             const { value } = target;
+            clearFilter();
             setValue(value);
         };
 

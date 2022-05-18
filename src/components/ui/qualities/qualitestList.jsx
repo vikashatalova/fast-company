@@ -10,7 +10,7 @@ const QualitestList = ({ qualities }) => {
     </>;
 };
 QualitestList.propTypes = {
-    qualities: PropTypes.array.isRequired
+    qualities: PropTypes.array
 };
 
 export default QualitestList;
