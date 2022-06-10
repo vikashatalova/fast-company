@@ -6,6 +6,7 @@ import { paginate } from "../../../utils/paginate";
 import GroupList from "../../common/groupList";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
+import { useUser } from "../../../hooks/useUsers";
 
 const UserList = () => {
     const [professions, setProfessions] = useState(api.professionsApi.fetchAll());
@@ -13,15 +14,18 @@ const UserList = () => {
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
     const [value, setValue] = useState("");
     const pageSize = 8;
+    const { users } = useUser();
+    console.log(users);
 
-    const [users, setUsers] = useState();
+    // const [users, setUsers] = useState();
     // получение данных ассинхронно
-    useEffect(() => {
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
+    // useEffect(() => {
+    //     api.users.fetchAll().then((data) => setUsers(data));
+    // }, []);
 
     const handleDelete = (userId) => {
-        setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+        // setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+        console.log(userId);
     };
 
     const handleProfessionsSelect = (item) => {
