@@ -2,18 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SelectField = ({ label, value, onChange, defaultOption, options, name, error }) => {
-    // const optionsArray =
-    //     !Array.isArray(options) && typeof (options) === "object"
-    //         ? Object.keys(options).map(optionName => ({
-    //             name: options[optionName].name,
-    //             value: options[optionName]._id
-    //         }))
-    //         : options;
     const optionsArray =
     !Array.isArray(options) && typeof options === "object"
         ? Object.values(options)
         : options;
 
+    console.log(optionsArray);
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
@@ -32,12 +26,6 @@ const SelectField = ({ label, value, onChange, defaultOption, options, name, err
                 onChange={handleChange}
             >
                 <option disabled value="">{defaultOption}</option>
-                {/* {optionsArray &&
-                    optionsArray.map((option) => (
-                        <option value={option.value} key={option.value}>
-                            {option.name}
-                        </option>
-                    ))} */}
                 {optionsArray.length > 0 &&
                     optionsArray.map((option) => (
                         <option value={option.value} key={option.value}>

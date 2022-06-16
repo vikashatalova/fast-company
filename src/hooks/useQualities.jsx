@@ -21,8 +21,8 @@ export const QualitiesProvider = ({ children }) => {
     }, [error]);
     function errorCatcher (error) {
         const { message } = error.response.data;
-        // setError(message);
-        console.log(message);
+        setError(message);
+        // console.log(message);
     }
     useEffect(() => {
         async function getQualities () {
