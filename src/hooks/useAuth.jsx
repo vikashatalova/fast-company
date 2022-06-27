@@ -6,11 +6,7 @@ import { toast } from "react-toastify";
 import localStorageService, { setTokens } from "../services/localStorage.service";
 
 export const httpAuth = axios.create({
-    // baseURL: "https://identitytoolkit.googleapis.com/v1/",
-    baseURL: "https://securetoken.googleapis.com/v1/",
-    params: {
-        key: process.env.REACT_APP_FIREBASE_KEY
-    }
+    baseURL: "https://identitytoolkit.googleapis.com/v1/"
 });
 
 const AuthContext = React.createContext();
@@ -20,7 +16,6 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    console.log(process.env.REACT_APP_FIREBASE_KEY);
     const [currentUser, setUser] = useState({});
     const [error, setError] = useState(null);
     function randomInt (min, max) {
@@ -28,14 +23,15 @@ const AuthProvider = ({ children }) => {
     }
 
     async function logIn ({ email, password }) {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
-            const { data } = await httpAuth.post(url,
+            const { data } = await httpAuth.post(
+                `accounts:signInWithPassword`,
                 {
                     email,
                     password,
                     returnSecureToken: true
-                });
+                }
+            );
             setTokens(data);
         } catch (error) {
             errorCatcher(error);
@@ -44,26 +40,34 @@ const AuthProvider = ({ children }) => {
             if (code === 400) {
                 switch (message) {
                 case "INVALID_PASSWORD":
-                    throw new Error("Email или пароль введены неккоректно");
+                    throw new Error("Email или пароль введены некорректно");
+
                 default:
-                    throw new Error("Слишком много попыток входа. Попробуйте позднее");
+                    throw new Error(
+                        "Слишком много попыток входа. Попробуйте позже"
+                    );
                 }
             }
         }
     }
 
     async function signUp ({ email, password, ...rest }) {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+        const url = `accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
 
         try {
-            const { data } = await httpAuth.post(url,
-                {
-                    email,
-                    password,
-                    returnSecureToken: true
-                });
+            const { data } = await httpAuth.post(url, {
+                email,
+                password,
+                returnSecureToken: true
+            });
             setTokens(data);
-            await createUser({ _id: data.localId, email, rate: randomInt(1, 5), completedMeetings: randomInt(0, 200), ...rest });
+            await createUser({
+                _id: data.localId,
+                email,
+                rate: randomInt(1, 5),
+                completedMeetings: randomInt(0, 200),
+                ...rest
+            });
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -81,6 +85,7 @@ const AuthProvider = ({ children }) => {
     async function createUser (data) {
         try {
             const { content } = await userService.create(data);
+            console.log(content);
             setUser(content);
         } catch (error) {
             errorCatcher(error);
