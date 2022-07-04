@@ -34,15 +34,15 @@ export const ProfessionProvider = ({ children }) => {
     function getProfession (id) {
         return profession.find((p) => p._id === id);
     }
+    function errorCatcher (error) {
+        const { message } = error.response.data;
+        setError(message);
+    }
     return (
         <ProfessionContext.Provider value={{ isLoading, profession, getProfession }}>
             { children }
         </ProfessionContext.Provider>
     );
-    function errorCatcher (error) {
-        const { message } = error.response.data;
-        setError(message);
-    }
 };
 ProfessionProvider.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])

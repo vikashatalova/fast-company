@@ -7,7 +7,6 @@ const SelectField = ({ label, value, onChange, defaultOption, options, name, err
         ? Object.values(options)
         : options;
 
-    console.log(optionsArray);
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };

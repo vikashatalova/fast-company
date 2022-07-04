@@ -16,6 +16,12 @@ export function getAcessToken () {
 export function getRefreshToken () {
     return localStorage.getItem(REFRESH_TOKEN);
 }
+export function removeAuthData () {
+    localStorage.removeItem(USERID_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN);
+    localStorage.removeItem(EXPIRES_KEY);
+}
 export function getExpiresToken () {
     return localStorage.getItem(EXPIRES_KEY);
 }
@@ -28,7 +34,8 @@ const localStorageService = {
     getAcessToken,
     getRefreshToken,
     getExpiresToken,
-    getUserId
+    getUserId,
+    removeAuthData
 };
 
 export default localStorageService;

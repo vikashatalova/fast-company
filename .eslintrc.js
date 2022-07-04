@@ -16,6 +16,13 @@ module.exports = {
         indent: ["error", 4, { ignoredNodes: ["ConditionalExpression"] }],
         semi: [2, "always"],
         "space-before-function-paren": ["error", "always"],
-        quotes: ["error", "double", { allowTemplateLiterals: true }]
+        quotes: [
+            "error",
+            "double",
+            {
+                allowTemplateLiterals: true,
+                avoidEscape: true
+            }
+        ]
     }
 };

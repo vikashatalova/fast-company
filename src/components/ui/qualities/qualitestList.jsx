@@ -3,21 +3,22 @@ import Qualities from "./quality";
 import PropTypes from "prop-types";
 import { useQualities } from "../../../hooks/useQualities";
 
-const QualitestList = ({ id }) => {
+const QualitestList = ({ userId }) => {
     const { isLoading, getQuality } = useQualities();
-    const qual = id.map(q => getQuality(q));
-    console.log(qual);
+    const qual = userId.map(q => getQuality(q));
     if (!isLoading) {
-        return <Qualities quality={qual}/>;
+        return <Qualities key={qual._id} quality={qual}/>;
     } else return "loading...";
-    // return <>
-    //     { qualities.map((quality) =>
-    //         <Qualities key={quality._id} {...quality}/>
-    //     )}
-    // </>;
+    // if (!isLoading) {
+    //     return <>
+    //         { qualities.map((qual) =>
+    //             <Qualities key={qual._id} quality={getQuality(qual)}/>
+    //         )}
+    //     </>;
+    // } else return "loading...";
 };
 QualitestList.propTypes = {
-    id: PropTypes.array.isRequired
+    userId: PropTypes.array.isRequired
 };
 
 export default QualitestList;

@@ -18,7 +18,7 @@ const QualitiesCard = ({ data }) => {
                     <span>Qualities</span>
                 </h5>
                 <p className="card-text">
-                    <QualitestList qualities={data}/>
+                    <QualitestList userId={data} />
                 </p>
             </div>
         </div>
