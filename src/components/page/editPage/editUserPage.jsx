@@ -5,7 +5,7 @@ import RadioField from "../../common/form/radio.Field";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { useHistory } from "react-router-dom";
 import { validator } from "../../../utils/validator";
-import BackHistoryButton from "../../common/backButton";
+// import BackHistoryButton from "../../common/backButton";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfessions } from "../../../hooks/useProfession";
 import { useQualities } from "../../../hooks/useQualities";
@@ -14,20 +14,18 @@ const EditUserPage = () => {
     const history = useHistory();
     // const { userId } = useParams();
     const { currentUser, editUser } = useAuth();
-    const { profession } = useProfessions();
-    const { qualities } = useQualities();
+    const { profession, isLoading: professionLoading } = useProfessions();
+    const { qualities, isLoading: qualitiesLoading } = useQualities();
     const [data, setData] = useState({
-        email: "",
-        name: "",
-        profession: "",
-        sex: "male",
-        qualities: []
+        email: currentUser.email,
+        name: currentUser.name,
+        profession: currentUser.profession,
+        sex: currentUser.sex,
+        qualities: currentUser.qualities
     });
     const [errors, setErrors] = useState({});
     const professions = profession.map((p) => ({ label: p.name, value: p._id }));
-    console.log(professions);
-    const allQualities = qualities.length > 0 ? (qualities.map((q) => ({ label: q.name, value: q._id }))) : [];
-    // const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState();
     // const getQualities = (elements) => {
     //     const qualitiesArray = [];
     //     for (const elem of elements) {
@@ -82,17 +80,17 @@ const EditUserPage = () => {
     // useEffect(() => {
     //     if (data._id) setIsLoading(false);
     // }, [data]);
+    const getQualities = (elements) => {
+        return elements.map(q => (q.value));
+    };
     const transformData = (data) => {
-        try {
-            const quality = [];
-            for (const qual of quality) {
-                const q = data.find((q) => q._id === qual);
-                quality.push(q);
-            }
-            return quality.map((qual) => ({ label: qual.name, value: qual._id }));
-        } catch (error) {
-            console.log(error);
+        const quality = [];
+        for (const qual of currentUser.qualities) {
+            const q = data.find((q) => q._id === qual);
+            quality.push(q);
+            console.log(qual);
         }
+        return quality.map((qual) => ({ label: qual.name, value: qual._id }));
     };
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -119,13 +117,24 @@ const EditUserPage = () => {
         validate();
     }, [currentUser]);
     useEffect(() => {
-        setData((prev) => ({
-            ...prev,
-            ...currentUser,
-            qualities: transformData(qualities),
-            profession: profession
-        }));
-    }, []);
+        if (!professionLoading && !qualitiesLoading && currentUser && !data) {
+            setData(() => ({
+                ...currentUser,
+                qualities: transformData(qualities)
+            }));
+        }
+    }, [professionLoading, qualitiesLoading, currentUser, data]);
+    useEffect(() => {
+        if (data && isLoading) {
+            setIsLoading();
+        }
+    }, [data]);
+    useEffect(() => {
+        if (data._id) {
+            setIsLoading(false);
+        }
+    }, [data]);
+
     const validate = () => {
         const errors = validator(currentUser, validatorConfig);
         setErrors(errors);
@@ -143,15 +152,15 @@ const EditUserPage = () => {
         });
         history.push(`/users/${currentUser._id}`);
     };
-    const getQualities = (elements) => {
-        return elements.map(q => (q.value));
-    };
     return (
         <div className="container mt-5">
-            <BackHistoryButton />
+            <button className="btn btn-primary" onClick={() => history.push(`/users/${currentUser._id}`)}>
+                <i className="bi bi-caret-left"></i>
+            Назад
+            </button>
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {qualities.length
+                    {qualities
 ? (
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -188,7 +197,7 @@ const EditUserPage = () => {
                         label="Выберите ваш пол"
                         />
                         <MultiSelectField
-                            options={allQualities}
+                            options={qualities}
                             onChange={handleChange}
                             defaultValue={data.qualities}
                             name="qualities"
