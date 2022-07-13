@@ -16,6 +16,7 @@ const EditUserPage = () => {
     const { currentUser, editUser } = useAuth();
     const { profession, isLoading: professionLoading } = useProfessions();
     const { qualities, isLoading: qualitiesLoading } = useQualities();
+    console.log(qualities);
     const [data, setData] = useState({
         email: currentUser.email,
         name: currentUser.name,
@@ -85,13 +86,14 @@ const EditUserPage = () => {
     };
     const transformData = (data) => {
         const quality = [];
+        console.log(quality);
         for (const qual of currentUser.qualities) {
             const q = data.find((q) => q._id === qual);
             quality.push(q);
-            console.log(qual);
         }
         return quality.map((qual) => ({ label: qual.name, value: qual._id }));
     };
+    console.log(transformData(qualities));
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
@@ -122,6 +124,7 @@ const EditUserPage = () => {
                 ...currentUser,
                 qualities: transformData(qualities)
             }));
+            console.log(qualities);
         }
     }, [professionLoading, qualitiesLoading, currentUser, data]);
     useEffect(() => {
@@ -160,7 +163,7 @@ const EditUserPage = () => {
             </button>
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {qualities
+                    {!professionLoading && !qualitiesLoading
 ? (
                     <form onSubmit={handleSubmit}>
                         <TextField

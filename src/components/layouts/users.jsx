@@ -13,7 +13,7 @@ const Users = () => {
     const { currentUser } = useAuth();
     return <>
         <UserProvider>
-            {userId ? (edit ? userId === currentUser._id ? (<EditUserPage />) : (<Redirect to={`/users/${currentUser}/edit`}/>) : <UserPage id={userId} />) : (<UserList />)}
+            {userId ? (edit ? userId === currentUser._id ? (<EditUserPage />) : (<Redirect to={`/users/${currentUser._id}/edit`}/>) : <UserPage id={userId} />) : (<UserList />)}
         </UserProvider>
     </>;
 };
