@@ -16,7 +16,6 @@ const EditUserPage = () => {
     const { currentUser, editUser } = useAuth();
     const { profession, isLoading: professionLoading } = useProfessions();
     const { qualities, isLoading: qualitiesLoading } = useQualities();
-    console.log(qualities);
     const [data, setData] = useState({
         email: currentUser.email,
         name: currentUser.name,
@@ -26,6 +25,13 @@ const EditUserPage = () => {
     });
     const [errors, setErrors] = useState({});
     const professions = profession.map((p) => ({ label: p.name, value: p._id }));
+    const getQualities = (elements) => {
+        return elements.map(q => (q.value));
+    };
+    const allQualities = qualities.map((q) => ({
+        label: q.name,
+        value: q._id
+    }));
     const [isLoading, setIsLoading] = useState();
     // const getQualities = (elements) => {
     //     const qualitiesArray = [];
@@ -81,12 +87,8 @@ const EditUserPage = () => {
     // useEffect(() => {
     //     if (data._id) setIsLoading(false);
     // }, [data]);
-    const getQualities = (elements) => {
-        return elements.map(q => (q.value));
-    };
     const transformData = (data) => {
         const quality = [];
-        console.log(quality);
         for (const qual of currentUser.qualities) {
             const q = data.find((q) => q._id === qual);
             quality.push(q);
@@ -200,9 +202,9 @@ const EditUserPage = () => {
                         label="Выберите ваш пол"
                         />
                         <MultiSelectField
-                            options={qualities}
+                            options={allQualities}
                             onChange={handleChange}
-                            defaultValue={data.qualities}
+                            defaultValue={transformData(qualities)}
                             name="qualities"
                             label="Выберите ваши качества"
                         />
