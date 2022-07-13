@@ -33,60 +33,6 @@ const EditUserPage = () => {
         value: q._id
     }));
     const [isLoading, setIsLoading] = useState();
-    // const getQualities = (elements) => {
-    //     const qualitiesArray = [];
-    //     for (const elem of elements) {
-    //         for (const quality in qualities) {
-    //             if (elem.value === qualities[quality].value) {
-    //                 qualitiesArray.push({
-    //                     _id: qualities[quality].value,
-    //                     name: qualities[quality].label,
-    //                     color: qualities[quality].color
-    //                 });
-    //             }
-    //         }
-    //     }
-    //     return qualitiesArray;
-    // };
-    // const getProfessionById = (id) => {
-    //     for (const prof of profession) {
-    //         if (prof.value === id) {
-    //             return { _id: prof.value, name: prof.label };
-    //         }
-    //     }
-    // };
-    // const transformData = (data) => {
-    //     return data.map((qual) => ({ label: qual.name, value: qual._id }));
-    // };
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     api.professionsApi.fetchAll().then((data) => {
-    //         const professionsList = Object.keys(data).map((professionName) => ({
-    //             label: data[professionName].name,
-    //             value: data[professionName]._id
-    //         }));
-    //         setProfession(professionsList);
-    //     });
-    //     api.qualitiesApi.fetchAll().then((data) => {
-    //         const qualitiesList = Object.keys(data).map((optionName) => ({
-    //             label: data[optionName].name,
-    //             value: data[optionName]._id,
-    //             color: data[optionName].color
-    //         }));
-    //         setQualities(qualitiesList);
-    //     });
-    //     api.users.getById(userId).then(({ profession, qualities, ...data }) => {
-    //         setData((prevState) => ({
-    //             ...prevState,
-    //             ...data,
-    //             qualities: transformData(qualities),
-    //             profession: profession._id
-    //         }));
-    //     });
-    // }, []);
-    // useEffect(() => {
-    //     if (data._id) setIsLoading(false);
-    // }, [data]);
     const transformData = (data) => {
         const quality = [];
         for (const qual of currentUser.qualities) {
@@ -95,7 +41,6 @@ const EditUserPage = () => {
         }
         return quality.map((qual) => ({ label: qual.name, value: qual._id }));
     };
-    console.log(transformData(qualities));
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
